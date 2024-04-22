@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/head') %>
+    <title>Blog</title>
+</head>
+<body>
+    <%- include('./partials/navbar') %>
+    <div class="container mt-4">
+        <h1><%= blog.title %></h1>
+        <img src="<%= blog.coverImgURL %>" width="400px"/>
+        <p><%= blog.body %></p>
+    </div>
+    <div class="container mt-4 mb-4">
+        <img src="<%= blog.createdBy.profileImgURL %>" width="60px"/>  <span><%= blog.createdBy.fullName %></span>
+        <hr/>
+    </div>
+    <div class="container mt-4 mb-4">
+        <h1>Comments (<%= comments.length %>)</h1>
+        <% if (locals.user) { %>
+            <form method="post" action="/blogs/comment/<%= blog._id %>" >
+                <div class="mb-3 mt-4">
+                    <input type="text" class="form-control" name="content" id="content" placeholder="Enter your comment">
+                </div>
+                <div class="mt-2 mb-3">
+                    <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+                </div>
+            </form>
+        <% } %>
+        <div class="mt-3">
+            <% comments.forEach(comment => { %>
+             <div class="row mt-2">
+                <div class="col">
+                    <img src="<%= blog.createdBy.profileImgURL %>" width="60px"/>  <span><%= comment.commentedBy.fullName %>: <%= comment.content %></span>
+                </div>
+                
+                <div class="col d-flex flex-row-reverse">
+                    <%= comment.created_at.toLocaleString() %>
+                </div>
+             </div>
+            <% }) %>
+        </div>
+    </div>
+    <%- include('./partials/scripts') %>
+</body>
+</html>
